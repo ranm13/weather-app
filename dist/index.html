@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset='utf-8' />
+   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+   <title>Page Title</title>
+   <meta name='viewport' content='width=device-width, initial-scale=1'>
+   <link rel='stylesheet' type='text/css' media='screen' href='style.css' />
+   <script></script>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="city-input">
+        <button onclick=searchCity()>Search</button>
+    </div>
+    <div id="city-container">
+       
+    </div>
+    <script src="./jquery/dist/jquery.js"></script>
+    <script src="./handlebars/dist/handlebars.js"></script>
+        <!-- ----------------------------------------------------->
+        <script id="city-template" type="text/x-handlebars-template">
+            <div class="city">
+                <div class= "city-name">{{name}}</div>
+                <div class= "updated-at">{{updatedAt}}</div>
+                <div class= "city-temperature">{{temperature}}</div>
+                <div class= "city-condition">{{condition}}</div>
+                <img src="{{conditionPic}}">
+            </div>
+        </script>
+        <!-- ---------------------------------------------------- -->
+    <script src='Renderer.js'></script>   
+    <script src='TempManager.js'></script>
+    <script src='main.js'></script>
+</body>
+</html>
