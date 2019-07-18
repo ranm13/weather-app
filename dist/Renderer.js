@@ -9,10 +9,10 @@ class Renderer {
         $(appendToPlace).append(newHTML);
     }
 
-    _renderCity(city) {
-        this.renderHendelbar("#city-template", city, "#city-container" )
+    _renderCity(allCityData) {
+        this.renderHendelbar("#city-template", {allCityData}, "#city-container" )
     }
-    render(city){
-        this._renderCity(city)
+    render(allCityData){
+        this._renderCity(allCityData)
     }
 }

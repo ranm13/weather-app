@@ -3,37 +3,48 @@ class TempManager{
         this.cityData =[]
     }
 
-    getDataFromDB(){
-        $.get('/cities', function(err, response){
-            this.cityData = response
-        })
+    async getDataFromDB(){
+        let cityDataDB = await $.get('/cities')
+        for(let city of cityDataDB){
+            if(((new Date) - city.updatedAt) >= 3){
+                this.updateCity(city.name)
+            }
+        }
+        return this.cityData = cityDataDB
     }
+
 
     async getCityData(cityName){
         let newCity = await $.get(`/city/${cityName}`)
-        this.cityData.push({
-            name: newCity.location.name,
-            updatedAt: newCity.location.localtime,
-            temperature: newCity.current.temp_c,
-            condition: newCity.current.condition.text,
-            conditionPic: newCity.current.condition.icon
-        })
+        if(newCity){
+            this.cityData.push(newCity)
+        }
+        
     }
 
     saveCity(cityName){
         for(let city of this.cityData){
             if(city.name === cityName){
-                    $.post('/city', city, function(err, response){ return console.log("post completed")})
+                $.post('/city', city, function(response){return})
             }
         }
     }
 
     removeCity(cityName){
         $.ajax({
-            method: "Delete",
+            method: "DELETE",
             url: `/city/${cityName}`,
-            success: () => console.log(cityName + " removed succesfuly")
+            success: (response) => console.log(cityName + " removed succesfuly")
           })
+    }
+
+    async updateCity(cityName){
+        await $.ajax({
+            method: "PUT",
+            url: `/city/${cityName}`,
+            success: (response) => this.cityData = response
+          })
+          return this.cityData
     }
 }
 

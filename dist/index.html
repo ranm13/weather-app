@@ -3,15 +3,17 @@
 <head>
    <meta charset='utf-8' />
    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-   <title>Page Title</title>
+   <title>Weather app</title>
    <meta name='viewport' content='width=device-width, initial-scale=1'>
-   <link rel='stylesheet' type='text/css' media='screen' href='style.css' />
-   <script></script>
+   <script src="https://kit.fontawesome.com/77b18202ad.js"></script>
+   <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+   <link rel='stylesheet' type='text/css' media='screen' href='style.css'/>
+
 </head>
 <body>
     <div id="search-container">
-        <input type="text" id="city-input">
-        <button onclick=searchCity()>Search</button>
+        <input type="text" id="city-input" placeholder="Choose a city">
+        <span id="search-button" onclick=handleSearch()><i class="fas fa-search"></i></span>
     </div>
     <div id="city-container">
        
@@ -20,13 +22,24 @@
     <script src="./handlebars/dist/handlebars.js"></script>
         <!-- ----------------------------------------------------->
         <script id="city-template" type="text/x-handlebars-template">
+            {{#each allCityData}}
             <div class="city">
                 <div class= "city-name">{{name}}</div>
-                <div class= "updated-at">{{updatedAt}}</div>
-                <div class= "city-temperature">{{temperature}}</div>
+                <!--<div class= "updated-at">{{updatedAt}}</div>-->
+                <div class= "city-temperature">{{temperature}}°C</div>
+                <img class="condition-img" src="{{conditionPic}}">
                 <div class= "city-condition">{{condition}}</div>
-                <img src="{{conditionPic}}">
+                <div class="save-remove-container">
+                        {{#if isSaved}}
+                         <div class="remove-city"><i class="fas fa-minus-circle"></i></div>
+                         <div class="refresh-button"><i class="fas fa-sync-alt"></i></div>
+                         <div class="updated-at">{{newFormatDate}}</div>
+                      {{else}}
+                        <div class="save-city"><i class="fas fa-plus-circle"></i></div>
+                      {{/if}}
+                </div>
             </div>
+            {{/each}}
         </script>
         <!-- ---------------------------------------------------- -->
     <script src='Renderer.js'></script>   
