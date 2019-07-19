@@ -6,11 +6,13 @@ class TempManager{
     async getDataFromDB(){
         let cityDataDB = await $.get('/cities')
         for(let city of cityDataDB){
-            if(((new Date) - city.updatedAt) >= 3){
+            if((new Date()) - new Date(city.updatedAt) >= 10800000){
                 this.updateCity(city.name)
             }
         }
-        return this.cityData = cityDataDB
+        cityDataDB = await $.get('/cities')
+        this.cityData = cityDataDB
+        return this.cityData
     }
 
 
@@ -19,7 +21,6 @@ class TempManager{
         if(newCity){
             this.cityData.push(newCity)
         }
-        
     }
 
     saveCity(cityName){
