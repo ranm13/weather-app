@@ -8,6 +8,7 @@ const loadPage =  async function(){
 
 const handleSearch = async function(){
     let city = $("#city-input").val()
+    $("#city-input").val(' ')
     if(city){
         let getCity = await tempManager.getCityData(city)
         renderer.render(tempManager.cityData)
