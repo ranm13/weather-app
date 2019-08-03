@@ -10,31 +10,27 @@ const handleSearch = async function(){
     let city = $("#city-input").val()
     $("#city-input").val(' ')
     if(city){
-        let getCity = await tempManager.getCityData(city)
+        await tempManager.getCityData(city)
         renderer.render(tempManager.cityData)
     }
-
 }
 
-const saveCity = function(){
+const editCity =  async function(){
     let cityName = $(this).closest(".city").find(".city-name").text()
-    tempManager.saveCity(cityName)
+    let operation = $(this).attr('class')
+    if(operation === "save-city"){
+        tempManager.saveCity(cityName)
+    }
+    else if(operation === "remove-city"){
+        tempManager.removeCity(cityName)
+    }
+    else if(operation === "refresh-button"){
+        await tempManager.updateCity(cityName)
+    }
     loadPage()
 }
 
-const removeCity = function(){
-    let cityName = $(this).closest(".city").find(".city-name").text()
-    tempManager.removeCity(cityName)
-    loadPage()
-}
-
-const updateCityData = async function(){
-    let cityName = $(this).closest(".city").find(".city-name").text()
-    let updatedData = await tempManager.updateCity(cityName)
-    loadPage()
-}
-
-$("#city-container").on("click", ".save-city", saveCity)
-$("#city-container").on("click", ".remove-city", removeCity)
-$("#city-container").on("click", ".refresh-button", updateCityData)
+$("#city-container").on("click", ".save-city", editCity)
+$("#city-container").on("click", ".remove-city", editCity)
+$("#city-container").on("click", ".refresh-button", editCity)
 loadPage()

@@ -6,15 +6,14 @@ class TempManager{
     async getDataFromDB(){
         let cityDataDB = await $.get('/cities')
         for(let city of cityDataDB){
+            //If it was updated more then three hours ago, update it
             if((new Date()) - new Date(city.updatedAt) >= 10800000){
-                this.updateCity(city.name)
+                await this.updateCity(city.name)
+                cityDataDB = await $.get('/cities')
             }
         }
-        cityDataDB = await $.get('/cities')
-        this.cityData = cityDataDB
-        return this.cityData
+        return this.cityData = cityDataDB
     }
-
 
     async getCityData(cityName){
         let newCity = await $.get(`/city/${cityName}`)
@@ -45,7 +44,5 @@ class TempManager{
             url: `/city/${cityName}`,
             success: (response) => this.cityData = response
           })
-          return this.cityData
     }
 }
-
