@@ -16,7 +16,7 @@
     <div id="search-container" >
         <div id="search-field" class="row">
             <input type="text" id="city-input" class="col l7 s9 offset-s1 offset-l3 " placeholder="Choose a city" >
-            <i id="search-button" class="material-icons center-align valign-wrapper button" onclick=handleSearch()>search</i>
+            <i id="search-button" class="material-icons center-align valign-wrapper" onclick=handleSearch()>search</i>
         </div>
     </div>
     <div class="row">
@@ -43,9 +43,9 @@
                     </div>
                     <div class="save-remove-container">
                         {{#if isSaved}}
-                            <span class="remove-city button"><i class="fas fa-minus-circle"></i></span>
-                            <span class="updated-at button">{{newFormatDate}}</span>
-                            <span class="refresh-button button"><i class="fas fa-sync-alt"></i></span>
+                            <span class="remove-city"><i class="fas fa-minus-circle"></i></span>
+                            <span class="updated-at">{{newFormatDate}}</span>
+                            <span class="refresh-button"><i class="fas fa-sync-alt"></i></span>
                         {{else}}
                             <span class="save-city"><i class="fas fa-plus-circle"></i></span>
                         {{/if}}
