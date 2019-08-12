@@ -3,11 +3,13 @@ class TempManager{
         this.cityData =[]
     }
 
+    shouldUpdate = (city) => (new Date() - new Date(city.updatedAt) >= 10800000)
+
     async getDataFromDB(){
         let cityDataDB = await $.get('/cities')
         for(let city of cityDataDB){
             //If it was updated more then three hours ago, update it
-            if((new Date()) - new Date(city.updatedAt) >= 10800000){
+            if(this.shouldUpdate(city)){
                 await this.updateCity(city.name)
                 cityDataDB = await $.get('/cities')
             }

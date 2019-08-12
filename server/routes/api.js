@@ -1,39 +1,42 @@
-const express = require( 'express' )
+const express = require('express')
 const router = express.Router()
 const request = require('request')
 const City = require('../models/City')
 const moment = require('moment')
 const apiUrl = `http://api.apixu.com/v1/current.json?key=92494961292b48baac484122191707&q=`
 
-router.get('/city/:cityName', function(req, res){
+const updateCityObject = function(cityObject, cityData){
+        cityObject.name = cityData.location.name
+        cityObject.updatedAt = new Date()
+        cityObject.temperature = cityData.current.temp_c
+        cityObject.condition = cityData.current.condition.text
+        cityObject.conditionPic = cityData.current.condition.icon
+}
+
+router.get('/city/:cityName', function (req, res) {
     let cityName = req.params.cityName
-    request(apiUrl + cityName, function(err, response){
-        if(response.statusCode === 200){
+    request(apiUrl + cityName, function (err, response) {
+        if (response.statusCode === 200) {
             let newCity = JSON.parse(response.body)
-            let cityRequiredData = {
-            name: newCity.location.name,
-            updatedAt: new Date(),
-            temperature: newCity.current.temp_c,
-            condition: newCity.current.condition.text,
-            conditionPic: newCity.current.condition.icon,
-            }
+            let cityRequiredData = {}
+            updateCityObject(cityRequiredData, newCity)
             res.send(cityRequiredData)
         }
-        else{
+        else {
             res.send(err)
         }
     })
 })
 
-router.get('/cities', function(req, res){
-    City.find({}).exec(function(err, cities){
+router.get('/cities', function (req, res) {
+    City.find({}).exec(function (err, cities) {
         let citiesToSend = cities
         citiesToSend.forEach(c => c.newFormatDate = (moment(c.updatedAt).format('LLL')))
         res.send(citiesToSend)
     })
 })
 
-router.post('/city', async function(req, res){
+router.post('/city', async function (req, res) {
     let city = req.body
     city.isSaved = true
     let newCity = new City(city)
@@ -41,24 +44,21 @@ router.post('/city', async function(req, res){
     res.end()
 })
 
-router.delete('/city/:cityName', function(req, res){
+router.delete('/city/:cityName', function (req, res) {
     let cityName = req.params.cityName
-    City.findOneAndRemove({name: cityName}, function(){
+    City.findOneAndRemove({ name: cityName }, function () {
         res.end()
     })
 })
 
-router.put('/city/:cityName', function(req, res){
+router.put('/city/:cityName', function (req, res) {
     let cityName = req.params.cityName
-    request(apiUrl + cityName, function(err, response){
+    request(apiUrl + cityName, function (err, response) {
         let cityUpdated = JSON.parse(response.body)
-        City.findOne({name: cityName}, async function(err, city){
-            city.updatedAt = moment().format()
-            city.temperature = cityUpdated.current.temp_c
-            city.condition = cityUpdated.current.condition.text
-            city.conditionPic = cityUpdated.current.condition.icon
+        City.findOne({ name: cityName }, async function (err, city) {
+            updateCityObject(city, cityUpdated)
             await city.save()
-            City.find({}).exec(function(err, cities){
+            City.find({}).exec(function (err, cities) {
                 res.send(cities)
             })
         })
