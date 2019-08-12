@@ -8,40 +8,55 @@
    <script src="https://kit.fontawesome.com/77b18202ad.js"></script>
    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
    <link rel='stylesheet' type='text/css' media='screen' href='style.css'/>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./materialize-css/dist/css/materialize.min.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-    <div id="search-container">
-        <input type="text" id="city-input" placeholder="Choose a city">
-        <span id="search-button" onclick=handleSearch()><i class="fas fa-search"></i></span>
+    <div id="search-container" >
+        <div id="search-field" class="row">
+            <input type="text" id="city-input" class="col l7 s9 offset-s1 offset-l3 " placeholder="Choose a city" >
+            <i id="search-button" class="material-icons center-align valign-wrapper button" onclick=handleSearch()>search</i>
+        </div>
     </div>
-    <div id="city-container">
-       
+    <div class="row">
+        <div id="city-container"></div>
     </div>
+    
     <script src="./jquery/dist/jquery.js"></script>
     <script src="./handlebars/dist/handlebars.js"></script>
-        <!-- ----------------------------------------------------->
+    <script type="text/javascript" src="./materialize-css/dist/js/materialize.min.js"></script>
+       
+    <!------------------------------------------------------->
         <script id="city-template" type="text/x-handlebars-template">
             {{#each allCityData}}
-            <div class="city">
-                <div class= "city-name">{{name}}</div>
-                <!--<div class= "updated-at">{{updatedAt}}</div>-->
-                <div class= "city-temperature">{{temperature}}°C</div>
-                <img class="condition-img" src="{{conditionPic}}">
-                <div class= "city-condition">{{condition}}</div>
-                <div class="save-remove-container">
+            <div class="city col s10 m6 l3 offset-s1">
+                <div class="card">
+                    <div class ="row1">
+                        <span class= "city-name ">{{name}}</span>
+                         <img class="condition-img right" src="{{conditionPic}}">
+                    </div>
+                    <div class ="row2">
+                        <span class= "city-temperature">{{temperature}}°C</span>
+                        <div class= "city-condition right">{{condition}}</div>
+                       
+                    </div>
+                    <div class="save-remove-container">
                         {{#if isSaved}}
-                         <div class="remove-city"><i class="fas fa-minus-circle"></i></div>
-                         <div class="refresh-button"><i class="fas fa-sync-alt"></i></div>
-                         <div class="updated-at">{{newFormatDate}}</div>
-                      {{else}}
-                        <div class="save-city"><i class="fas fa-plus-circle"></i></div>
-                      {{/if}}
+                            <span class="remove-city button"><i class="fas fa-minus-circle"></i></span>
+                            <span class="updated-at button">{{newFormatDate}}</span>
+                            <span class="refresh-button button"><i class="fas fa-sync-alt"></i></span>
+                        {{else}}
+                            <span class="save-city"><i class="fas fa-plus-circle"></i></span>
+                        {{/if}}
+                    </div>
                 </div>
+      
             </div>
             {{/each}}
         </script>
-        <!-- ---------------------------------------------------- -->
+        <!-------------------------------------------------------->
+
     <script src='Renderer.js'></script>   
     <script src='TempManager.js'></script>
     <script src='main.js'></script>
