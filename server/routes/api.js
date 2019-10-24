@@ -3,14 +3,14 @@ const router = express.Router()
 const request = require('request')
 const City = require('../models/City')
 const moment = require('moment')
-const apiUrl = `http://api.apixu.com/v1/current.json?key=92494961292b48baac484122191707&q=`
+const apiUrl = `http://api.weatherstack.com/current?access_key=8a5ee143194385666c94c1e9f07cd5de&query=`
 
 const updateCityObject = function(cityObject, cityData){
         cityObject.name = cityData.location.name
         cityObject.updatedAt = new Date()
-        cityObject.temperature = cityData.current.temp_c
-        cityObject.condition = cityData.current.condition.text
-        cityObject.conditionPic = cityData.current.condition.icon
+        cityObject.temperature = cityData.current.temperature
+        cityObject.condition = cityData.current.weather_descriptions[0]
+        cityObject.conditionPic = cityData.current.weather_icons[0]
 }
 
 router.get('/city/:cityName', function (req, res) {
